@@ -11,25 +11,20 @@
  */
 
 class Solution {
-    TreeNode* first, *last, *prev;
 public:
-    void inorder(TreeNode* root){
-        if(root==NULL) return;
-        inorder(root->left);
-        if(prev!=NULL && (root->val<prev->val)){
-            if(first==NULL){
-                first=prev;
-                last=root; 
-            }
-            else
-                last=root;
-        }
-        prev=root;
-        inorder(root->right);
+    TreeNode *second=nullptr;
+    TreeNode *first=nullptr;
+    TreeNode *pre;
+    void solve(TreeNode *root){
+        if(root->left) solve(root->left);
+        if(!first && pre->val>root->val) first=pre;
+        if(first && pre->val>root->val) second=root;
+        pre=root;
+        if(root->right) solve(root->right);
     }
     void recoverTree(TreeNode* root) {
-        first=last=prev=NULL;
-        inorder(root);
-        swap(first->val,last->val);
+        pre=new TreeNode(INT_MIN);
+        solve(root);
+        swap(first->val,second->val);
     }
 };
