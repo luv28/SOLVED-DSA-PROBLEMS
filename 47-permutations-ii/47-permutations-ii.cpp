@@ -1,25 +1,27 @@
 class Solution {
     vector<vector<int>> ans;
-    set<vector<int>> s;
+    unordered_map<int,int> m;
 public:
     void helper(vector<int> &nums,vector<int> &ve){
-        if(nums.size()==0){
-            s.insert(ve);
+        if(ve.size()==nums.size()){
+            ans.push_back(ve);
             return;
         }
-        for(int i=0;i<nums.size();i++){
-            int temp=nums[i];
-            ve.push_back(temp);
-            nums.erase(nums.begin()+i);
+        for(auto a:m){
+            int num=a.first;
+            int count=a.second;
+            if(m[num]==0) continue;
+            ve.push_back(num);
+            m[num]--;
             helper(nums,ve);
             ve.pop_back();
-            nums.insert(nums.begin()+i,temp);
+            m[num]++;
         }
     }
     vector<vector<int>> permuteUnique(vector<int>& nums) {
         vector<int> ve;
+        for(auto a:nums) m[a]++;
         helper(nums,ve);
-        for(auto a:s) ans.push_back(a);
         return ans;
     }
 };
