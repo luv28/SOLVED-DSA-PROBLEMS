@@ -1,1 +1,1 @@
-​
+use helper function to calculate and store side length of square
