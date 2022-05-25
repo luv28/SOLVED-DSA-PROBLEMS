@@ -11,18 +11,16 @@
  */
 class Solution {
 public:
-    void helper(TreeNode* a, TreeNode* b){
-        a->val+=b->val;
-        if(a->left&&b->left) helper(a->left,b->left);
-        if(!a->left) a->left=b->left;
-        
-        if(a->right&&b->right) helper(a->right,b->right);
-        if(!a->right) a->right=b->right;
+    TreeNode* helper(TreeNode* r1, TreeNode* r2){
+        if(!r1) return r2;
+        if(!r2) return r1;
+        TreeNode *temp=new TreeNode;
+        temp->val=r1->val + r2->val;
+        temp->left=helper(r1->left,r2->left);
+        temp->right=helper(r1->right,r2->right);
+        return temp;
     }
     TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
-        if(!root1) return root2;
-        if(!root2) return root1;
-        helper(root1,root2);
-        return root1;
+        return helper(root1,root2);
     }
 };
