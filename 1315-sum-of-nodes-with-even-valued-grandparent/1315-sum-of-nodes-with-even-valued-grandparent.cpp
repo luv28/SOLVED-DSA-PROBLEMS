@@ -11,16 +11,21 @@
  */
 class Solution {
 public:
-    void dfs(TreeNode *root,int &sum, TreeNode *parent,TreeNode *grandParent){
-        if(grandParent && (grandParent->val)%2==0) sum+=root->val;
-        if(root->left) dfs(root->left,sum,root,parent);
-        if(root->right) dfs(root->right,sum,root,parent);
-        return;
-    }
     int sumEvenGrandparent(TreeNode* root) {
         int sum=0;
-        if(!(root->left || root->right)) return sum;
-        dfs(root,sum,nullptr,nullptr);
+        if((root->val)%2==0){
+            if(root->left){
+                if(root->left->left) sum+= root->left->left->val;
+                if(root->left->right) sum+= root->left->right->val;
+            }
+            if(root->right){
+                if(root->right->left) sum+= root->right->left->val;
+                if(root->right->right) sum+= root->right->right->val;
+            }    
+        }
+        
+        if(root->left) sum+=sumEvenGrandparent(root->left);
+        if(root->right) sum+=sumEvenGrandparent(root->right);
         return sum;
     }
 };
