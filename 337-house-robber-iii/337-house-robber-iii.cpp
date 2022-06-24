@@ -18,14 +18,8 @@ public:
         if(dp.find(root)!=dp.end()) return dp[root];
             
         int consider=root->val;
-        if(root->left){
-            if(root->left->left) consider+=helper(root->left->left);
-            if(root->left->right) consider+=helper(root->left->right);
-        }
-        if(root->right){
-            if(root->right->left) consider+=helper(root->right->left);
-            if(root->right->right) consider+=helper(root->right->right);
-        }
+        if(root->left) consider+=helper(root->left->left)+helper(root->left->right);
+        if(root->right) consider+=helper(root->right->left)+helper(root->right->right);
         
         int notConsider=0;
         if(root->left) notConsider+=helper(root->left);
