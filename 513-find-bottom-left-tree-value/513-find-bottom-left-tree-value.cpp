@@ -16,15 +16,13 @@ public:
         q.push(root);
         int ans;
         while(!q.empty()){
-            int n=q.size();
-            int i=n;
-            while(i){
+            ans=q.front()->val;
+            int i=q.size();
+            while(i--){
                 TreeNode * curr=q.front();
                 q.pop();
-                if(i==n) ans=curr->val;
                 if(curr->left) q.push(curr->left);
                 if(curr->right) q.push(curr->right);
-                i--;
             }
         }
         return ans;
