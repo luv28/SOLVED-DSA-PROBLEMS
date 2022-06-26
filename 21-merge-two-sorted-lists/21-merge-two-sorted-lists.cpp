@@ -16,33 +16,18 @@ public:
         ListNode *ans=new ListNode;
         if(list1->val>=list2->val) ans=list2;
         else ans=list1;
-        while(list1 || list2){
-            if(list1 && list2){
+        while(list1 && list2){
                 if(list1->val>=list2->val){
                     curr->next=list2;
-                    curr=curr->next;
                     list2=list2->next;
                 }else{
                     curr->next=list1;
-                    curr=curr->next;
                     list1=list1->next;
                 }
+                curr=curr->next;
             } 
-            else if(list1){
-                while(list1){
-                    curr->next=list1;
-                    curr=curr->next;
-                    list1=list1->next;
-                }
-            } 
-            else{
-                while(list2){
-                    curr->next=list2;
-                    curr=curr->next;
-                    list2=list2->next;
-                }
-            }
-        }
+            if(!list1) curr->next=list2;
+            else curr->next=list1;
         return ans;
     }
 };
