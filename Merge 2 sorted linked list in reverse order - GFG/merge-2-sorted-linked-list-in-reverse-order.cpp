@@ -97,35 +97,32 @@ Node* next;
 
 */
 
-struct Node * mergeResult(Node *node1,Node *node2)
-{
-    stack<Node *> s;
-    while(node1 && node2){
-        if(node1->data<=node2->data){
-            s.push(node1);
-            node1=node1->next;
-        } 
-        else{
-            s.push(node2);
-            node2=node2->next;
+struct Node * mergeResult(Node *head1,Node *head2){
+    Node *head=nullptr;
+    while(head1 &&head2){
+        if(head1->data >=head2->data){
+            Node *temp=head2->next;
+            head2->next=head;
+            head=head2;
+            head2=temp;
+        }else{
+            Node *temp=head1->next;
+            head1->next=head;
+            head=head1;
+            head1=temp;
         }
     }
-    while(node1){
-        s.push(node1);
-            node1=node1->next;
+    while(head1){
+        Node *temp=head1->next;
+        head1->next=head;
+        head=head1;
+        head1=temp;
     }
-    while(node2){
-        s.push(node2);
-        node2=node2->next;
+    while(head2){
+        Node *temp=head2->next;
+        head2->next=head;
+        head=head2;
+        head2=temp;
     }
-    Node *ans=new Node;
-    ans->data=-1;
-    Node *curr=ans;
-    while(!s.empty()){
-        curr->next=s.top();
-        curr=curr->next;
-        s.pop();
-    }
-    curr->next=nullptr;
-    return ans->next;
+    return head;
 }
