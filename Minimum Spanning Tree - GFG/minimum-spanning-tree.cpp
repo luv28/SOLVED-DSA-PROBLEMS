@@ -23,7 +23,7 @@ class Solution
             vis[currNode]=true;
             mincost+=currCost;
             for(auto a:adjL[currNode]){
-                if(vis[a[0]]) continue;
+                // if(vis[a[0]]) continue;
                 pq.push({a[1],a[0]});
             }
         }
