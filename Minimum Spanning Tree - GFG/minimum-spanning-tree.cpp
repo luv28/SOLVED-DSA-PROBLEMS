@@ -7,25 +7,46 @@ using namespace std;
 
 class Solution
 {
+    int find(vector<int> &parents,int a){
+        if(parents[a]==a) return a;
+        else parents[a]=find(parents,parents[a]);
+        return parents[a];
+    }
+    void unionByRank(vector<int> &parents,vector<int> &rank,int a, int b){
+        int rootA=find(parents,a);
+        int rootB=find(parents,b);
+        if(rank[rootA]>rank[rootB]) parents[rootB]=rootA;
+        else if(rank[rootA]<rank[rootB]) parents[rootA]=rootB;
+        else {
+            parents[rootA]=rootB;
+            rank[rootB]++;
+        }
+    }
 	public:
 	//Function to find sum of weights of edges of the Minimum Spanning Tree.
-    int spanningTree(int V, vector<vector<int>> adjL[])
-    {
-        vector<bool> vis(V,false);
+    int spanningTree(int V, vector<vector<int>> adjL[]){
         int mincost=0;
-        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq;
-        pq.push({0,0});
-        while(!pq.empty()){
-            int currNode=pq.top().second;
-            int currCost=pq.top().first;
-            pq.pop();
-            if(vis[currNode]==true) continue;
-            vis[currNode]=true;
-            mincost+=currCost;
-            for(auto a:adjL[currNode]){
-                // if(vis[a[0]]) continue;
-                pq.push({a[1],a[0]});
+        vector<int> parents(V);
+        for(int i=0;i<V;i++) parents[i]=i;
+        vector<int> rank(V,0);
+        vector<vector<int>> edges;
+        for(int i=0;i<V;i++){
+            int u=i;
+            for(auto a: adjL[u]){
+                int v=a[0];
+                int w=a[1];
+                vector<int> edge={w,u,v};
+                edges.push_back(edge);    
             }
+        }
+        sort(edges.begin(),edges.end());
+        for(auto edge:edges){
+            int w=edge[0];
+            int u=edge[1];
+            int v=edge[2];
+            if(find(parents,u)==find(parents,v)) continue;
+            unionByRank(parents,rank,u,v);
+            mincost+=w;
         }
         return mincost;
     }
