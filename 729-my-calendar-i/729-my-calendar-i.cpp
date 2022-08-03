@@ -1,23 +1,16 @@
 class MyCalendar {
 public:
-    map<int,int> m;
+    unordered_map<int,int> bookings;
     MyCalendar() {
-        m.clear();
+        bookings.clear();
     }
     
-    bool book(int start, int end) {
-        bool flag=true;
-        for(auto const &[low,high]:m){
-            if((start>=low && start<high) || (end>low && end<high) || (low>=start && low<end) || (high>start && high<end)){
-                flag=false;
-                break;
-            }
-        }
-        if(!flag) return false;
-        else{
-            m[start]=end;
-            return true;
-        }
+    bool book(int s1, int e1) {
+        for(auto const &[s2,e2]:bookings){
+            if(!(s1>=e2 || s2>=e1)) return false;
+        } 
+        bookings[s1]=e1;
+        return true;
     }
 };
 
